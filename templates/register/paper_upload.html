@@ -1,0 +1,15 @@
+<div id="contents">
+    <h2>論文登録<span>Register</span></h2>
+
+        <div class="container">
+            <div class="jumbotron">
+                <h1>welcome</h1>
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </form>
+            </div>
+        </div>
+</div>
+<a href="javascript:history.back();">前のページに戻る</a>

@@ -1,5 +1,8 @@
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils import timezone
+
+from accounts.models import User
 
 # Create your models here.
 
@@ -64,6 +67,7 @@ class Laboratory(models.Model):
     # 情報の確認
     confirmation = models.BooleanField(null=True)
     # 作成者情報
+    uploader = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='uploader')
 
     def publish(self):
         self.create_date = timezone.now()
@@ -89,3 +93,26 @@ class SearchText(models.Model):
     class Meta:
         verbose_name = '検索ワード'
         db_table = 'search'
+
+
+class ResearchPaper(models.Model):
+    """
+    検索された内容を格納するモデル
+    """
+    paper_title = models.CharField('論文タイトル', max_length=100)
+    paper_info = models.TextField(blank=True)
+    laboratory = models.ForeignKey(Laboratory, on_delete=models.CASCADE,
+                                   blank=True, null=True, related_name='paper_uploader')
+
+    paper_file = models.FileField(
+        upload_to='uploads/',
+        verbose_name='研究論文',
+        validators=[FileExtensionValidator(['pdf', ])],
+    )
+
+    def __str__(self):
+        return self.paper_title
+
+    class Meta:
+        verbose_name = '論文'
+        db_table = 'research_paper'

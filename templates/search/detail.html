@@ -75,6 +75,22 @@ UTF-8">
     <div style="margin: 60px 20px;">
       {{ laboratory.research_info }}
     </div>
+    <div style="margin: 60px 20px;">
+    <table>
+    <tr>
+        <td>タイトル</td>
+        <td>詳細</td>
+        <td></td>
+    </tr>
+      {% for paper in paper_list %}
+          <tr>
+              <td>{{ paper.paper_title }}</td>
+              <td>{{ paper.paper_info }}</td>
+              <td><a href="{{ paper.paper_file }}" download="{{ paper.paper_file }}">ダウンロード</a></td>
+          </tr>
+      {% endfor %}
+    </table>
+    </div>
       <div style="margin: 60px 20px;">
       <a href="{{ laboratory.laboratory_website }}" target="_blank">研究室HPへ</a>
     </div>

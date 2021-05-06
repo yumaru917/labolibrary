@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'register_lab.apps.RegisterLabConfig',
     'accounts.apps.AccountsConfig',
     'contact_form.apps.ContactFormConfig',
+    'mypage.apps.MypageConfig',
+    'blog.apps.BlogConfig',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +137,6 @@ LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'accounts:top'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

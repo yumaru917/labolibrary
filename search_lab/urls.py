@@ -26,4 +26,6 @@ urlpatterns = [
     path('search/', include('search.urls')),  # 今回追加
     path('register/', include('register_lab.urls')),  # 今回追加
     path('contact/', include('contact_form.urls')),  # 今回追加
+    path('mypage/', include('mypage.urls')),  # 今回追加
+    path('blog/', include('blog.urls')),  # 今回追加
 ]

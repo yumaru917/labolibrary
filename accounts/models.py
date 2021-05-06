@@ -27,6 +27,7 @@ class CustomUserManager(UserManager):
     def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('status_position', 100)
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
@@ -38,8 +39,36 @@ class User(AbstractBaseUser, PermissionsMixin):
     """カスタムユーザーモデル."""
 
     email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
+    first_name = models.CharField(_('first name'), max_length=30, blank=False)
+    last_name = models.CharField(_('last name'), max_length=150, blank=False)
+    university = models.CharField(_('大学'), max_length=30, blank=False)
+    department = models.CharField(_('専攻・学科'), max_length=30, blank=False)
+    laboratory = models.CharField(_('研究室名'), max_length=30, blank=False)
+    status_position = models.IntegerField(
+        _('身分'),
+        choices=(
+            (0, '学部1年生'),
+            (1, '学部2年生'),
+            (2, '学部3年生'),
+            (3, '学部4年生'),
+            (4, '学部5年生'),
+            (5, '学部6年生'),
+            (6, '修士1年生'),
+            (7, '修士2年生'),
+            (8, '博士1年生'),
+            (9, '博士2年生'),
+            (10, '博士3年生'),
+            (11, '研究室関係者(教員)'),
+            (12, 'その他'),
+        ),
+        blank=False)
+    is_lab = models.BooleanField(
+        _('研究室'),
+        default=False,
+        help_text=_(
+            'True: 研究室, False: 学生'
+        )
+    )
 
     is_staff = models.BooleanField(
         _('staff status'),

@@ -3,7 +3,7 @@ import urllib
 
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from search.models import Laboratory, SearchText
+from search.models import Laboratory, SearchText, ResearchPaper
 from search.forms import SearchForm
 
 logging.basicConfig(level=logging.INFO, format='%(threadName)s: %(message)s')
@@ -79,7 +79,8 @@ def search_view(request):
 
 def detail_view(request, lab_pk):
     laboratory = Laboratory.objects.get(pk=lab_pk)
-    context = {'laboratory': laboratory}
+    paper = ResearchPaper.objects.filter(laboratory_id=laboratory.id)
+    context = {'laboratory': laboratory, 'paper_list': paper}
 
     # return HttpResponse(table)
 

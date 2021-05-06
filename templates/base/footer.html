@@ -1,0 +1,32 @@
+{% load static %}
+<footer>
+
+<div id="footermenu">
+<ul>
+<li class="title">Lab Libraryについて</li>
+<li><a href="{% url "about" %}">Lab Libraryとは</a></li>
+</ul>
+<ul>
+<li class="title">研究室検索</li>
+<li><a href="{% url 'search:search' %}">キーワード検索</a></li>
+<li><a href="{% url 'search:search' %}">カテゴリー検索(準備中)</a></li>
+<li>研究室PR(準備中)</li>
+</ul>
+<ul>
+<li class="title">お問い合わせ</li>
+<li><a href="{% url 'contact_form:index' %}">Contact</a></li>
+</ul>
+<ul>
+<li class="title">研究室の方へ</li>
+<li><a href="{% url 'register_lab:register' %}">研究室登録はこちら</a></li>
+</ul>
+</div>
+<!--/#footermenu-->
+
+<div id="copyright">
+<small>Copyright&copy; <a href="index.html">SAMPLE COMPANY</a> All Rights Reserved.</small>
+<span class="pr"><a href="https://template-party.com/" target="_blank">《Web Design:Template-Party》</a></span>
+</div>
+<!--/#copyright-->
+
+</footer>
