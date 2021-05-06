@@ -77,7 +77,9 @@ UTF-8">
 <li><a href="{% url 'accounts:logout' %}">ログアウト</a></li>
 <li><a href="{% url 'index' %}">ホームに戻る</a></li>
 <li><a href="{% url 'contact_form:index' %}">お問い合わせ</a></li>
+{% if laboratory %}
 <li><a href="{% url 'mypage:labdata_update' laboratory.pk %}">記載研究室情報編集</a></li>
+{% endif %}
 <li><a href="{% url 'register_lab:paper_upload' %}">論文アップロード</a></li>
 <h2>論文リスト</h2>
     <table>
