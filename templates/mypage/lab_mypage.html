@@ -90,7 +90,7 @@ UTF-8">
           <tr>
               <td>{{ paper.paper_title }}</td>
               <td>{{ paper.paper_info }}</td>
-              <td><a href="{{ paper.paper_file }}" download="{{ paper.paper_file }}">ダウンロード</a></td>
+              <td><a href="{% url 'search:paper_download' paper.pk %}">ダウンロード</a></td>
               <td><a href="{% url 'register_lab:paper_delete' paper.pk %}">削除</a><br></td>
           </tr>
       {% endfor %}

@@ -1,7 +1,8 @@
 import logging
 import urllib
 
-from django.shortcuts import render, redirect
+from django.http import FileResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from search.models import Laboratory, SearchText, ResearchPaper
 from search.forms import SearchForm
@@ -85,3 +86,9 @@ def detail_view(request, lab_pk):
     # return HttpResponse(table)
 
     return render(request, "search/detail.html", context)
+
+
+def paper_download(request, pk):
+    upload_file = get_object_or_404(ResearchPaper, pk=pk)
+    file = upload_file.paper_file  # ファイル本体
+    return FileResponse(file)
