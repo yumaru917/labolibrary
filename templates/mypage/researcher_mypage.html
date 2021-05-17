@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>研究室所属者マイページ</h2>
+    ようこそ。{{ user.last_name }} {{ user.first_name }}さん
+    <ul>
+    <li><a href="{% url 'laboratory_page:lab_page_home' %}">研究室ページへ</a></li>
+    <li><a href="{% url 'accounts:logout' %}">ログアウト</a></li>
+    {% if not user_profile %}
+    <li><a href="{% url 'mypage:create_user_profile' %}">プロフィール作成</a></li>
+    {% else %}
+        要修正（エラー原因）
+    <li><a href="{% url 'mypage:user_profile_update' user_profile.pk%}">プロフィール編集</a></li>
+    {% endif %}
+    </ul>
+
+    <h2>お気に入り研究室</h2>
+    <ul>
+        {% for favorite_lab in favorite_laboratory %}
+            <li>{{ favorite_lab.laboratory.laboratory_name }}<a href="{% url 'search:detail' lab_pk=favorite_lab.pk %}">研究室詳細</a></li>
+        {% endfor %}
+    </ul>
+    {% if user_profile %}
+    <a href="{% url 'mypage:user_profile' %}">プロフィール</a>
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'accounts:user_delete_confirm' %}">退会する</a>
+{% endblock %}

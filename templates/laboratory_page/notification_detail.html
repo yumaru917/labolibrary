@@ -1,0 +1,18 @@
+{{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <ul>
+    <h2>タイトル</h2>
+    <li>{{ notification.title }}</li>
+    <h2>種類</h2>
+    <li>{{ notification.kind_of_notification }}</li>
+    <h2>送信者</h2>
+    <li>{{ notification.send_user.last_name }}</li>
+    <h2>作成日</h2>
+    <li>{{ notification.create_date }}</li>
+    <h2>本文</h2>
+    <li>{{ notification.notification_detail }}</li>
+    </ul>
+
+{% endblock %}

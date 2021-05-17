@@ -3,25 +3,15 @@ from django.db import models
 from django.utils import timezone
 
 from accounts.models import User
+from mypage.models import Laboratory
 
 # Create your models here.
 
 
-class Laboratory(models.Model):
-    # 研究室名（必須）
-    laboratory_name = models.CharField(max_length=100)
-    # 学校（必須）
-    university = models.CharField(max_length=100)
-    # 学校の都道府県
-    university_area = models.IntegerField(default=0, blank=True)
-    # 学校が国立か私立か
-    university_system = models.IntegerField(default=0, blank=True)
-    # 学校HP
-    university_website = models.URLField(blank=True)
-    # 学部
-    faculty = models.CharField(max_length=100, blank=True)
-    # 学科専攻（必須）
-    department = models.CharField(max_length=100)
+class LaboratoryInfo(models.Model):
+    # 研究室(ここを変える。)
+    laboratory = models.OneToOneField(Laboratory,
+                                      on_delete=models.CASCADE, related_name='info_of_laboratory')
     # 学科専攻HP
     department_website = models.URLField(blank=True)
     # キャンパス
@@ -59,26 +49,24 @@ class Laboratory(models.Model):
     # 口コミ
     free_comment = models.TextField(blank=True)
     # ページ作成日時（必須）
-    create_date = models.DateField(auto_now=True)
+    page_create_date = models.DateField(auto_now=True)
     # 更新日時
-    update_date = models.DateTimeField(auto_now=True)
+    page_update_date = models.DateTimeField(auto_now=True)
     # 情報元webページ（必須）
     information_source = models.URLField()
     # 情報の確認
     confirmation = models.BooleanField(null=True)
-    # 作成者情報
-    uploader = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='uploader')
 
     def publish(self):
         self.create_date = timezone.now()
         self.save()
 
     def __str__(self):
-        return self.laboratory_name
+        return self.laboratory.laboratory_name
 
     class Meta:
-        verbose_name = '研究室'
-        verbose_name_plural = '研究室一覧'
+        verbose_name = '記載研究室'
+        verbose_name_plural = '記載研究室一覧'
 
 
 class SearchText(models.Model):
@@ -100,14 +88,22 @@ class ResearchPaper(models.Model):
     検索された内容を格納するモデル
     """
     paper_title = models.CharField('論文タイトル', max_length=100)
+    paper_kind = models.CharField('論文の種類', null=True, blank=True, max_length=100)
     paper_info = models.TextField(blank=True)
-    laboratory = models.ForeignKey(Laboratory, on_delete=models.CASCADE,
-                                   blank=True, null=True, related_name='paper_uploader')
+    laboratory = models.ForeignKey(LaboratoryInfo, on_delete=models.CASCADE,
+                                   related_name='uploaded_paper')
 
     paper_file = models.FileField(
         upload_to='uploads/',
         verbose_name='研究論文',
         validators=[FileExtensionValidator(['pdf', ])],
+    )
+    paper_uploader = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='upload_paper'
     )
 
     def __str__(self):

@@ -1,11 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>学生マイページ</h1>
-<li><a href="{% url 'accounts:logout' %}">ログアウト</a></li>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    <h2>学生マイページ</h2>
+    <a href="{% url 'accounts:logout' %}">ログアウト</a>
+
+    <ul>
+        <li>お気に入り研究室</li>
+        {% for favorite_lab in favorite_laboratory %}
+            <li>{{ favorite_lab.laboratory_name }}<a href="{% url 'search:detail' lab_pk=favorite_lab.pk %}">研究室詳細</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'accounts:user_delete_confirm' %}">退会する</a>
+{% endblock %}

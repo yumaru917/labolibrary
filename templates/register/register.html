@@ -73,20 +73,16 @@
         <div class="container">
             <div class="jumbotron">
                 <h1>welcome</h1>
+                <ul>
+                    <li>研究室名：{{ laboratory.laboratory_name }}</li>
+                    <li>大学：{{ laboratory.belong_university }}</li>
+                    <li>学部：{{ laboratory.belong_faculty }}</li>
+                    <li>学科・専攻：{{ laboratory.belong_department }}</li>
+
+                </ul>
                 <form method="POST">
                     {{ form.as_p }}
                     {% csrf_token %}
-{#                    {% for item in form %}#}
-{#                        <div class="form-group">#}
-{#                        <label for="{{item.id_for_label}}">{{item.label}}</label>#}
-{#                        <input #}
-{#                        type="{{item.field.widget.input_type}}"#}
-{#                        class="form-control" #}
-{#                        {% if item.field.required %}required{% endif %} #}
-{#                        name="{{item.name}}" #}
-{#                        id="{{item.id_for_label}}">#}
-{#                        </div>#}
-{#                    {% endfor %}#}
                     <input type="submit" class="btn btn-primary" value="Submit">
                 </form>
             </div>

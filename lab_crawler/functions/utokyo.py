@@ -19,11 +19,13 @@ class GetHTML(object):
             "NEM":
                 "http://www.n.t.u-tokyo.ac.jp/online/lab/list/",
             "BioEngineering":
-                "http://www.bioeng.t.u-tokyo.ac.jp/faculty/index.html"
+                "http://www.bioeng.t.u-tokyo.ac.jp/faculty/index.html",
+            "mechanics":
+                "http://www2.mech.t.u-tokyo.ac.jp/research/"
         }
         self.laboratory_list = {}
         self.options = webdriver.ChromeOptions()
-        self.options.add_argument('--headless')
+        # self.options.add_argument('--headless')
         # self.options.add_argument('--no-sandbox')
         self.driver = webdriver.Chrome('C:\\Users\\greee\\anaconda3\\envs\\django-env\\chromedriver.exe'
                                        , options=self.options)
@@ -138,6 +140,31 @@ class GetHTML(object):
 
                 f.write(professor_name + ',' + lab_detail + ',' + detail_url[1] + '\n')
 
+    def get_mechanics(self):
+        print('i')
+        self.driver.get(self.url_list['mechanics'])
+        print(self.driver.get(self.url_list['mechanics']))
+        for i in range(6):
+            if i == 0:
+                continue
+            element = self.driver.find_element_by_id("research{}".format(i))
+            elements = element.find_elements_by_tag_name("li")
+            for ele in elements:
+                # print(ele.text)
+                # teacher = ele.find_element_by_class_name('teacher-name').text
+                # belong = ele.find_element_by_class_name('teacher-belong').text
+                url = ele.find_element_by_class_name('teacher-website')
+                url = url.find_element_by_tag_name('a').get_attribute("href")
+                print(url)
+                # text = ele.find_element_by_class_name('research-text').text
+                # theme_list = []
+                # themes = ele.find_elements_by_class_name('teacher-website')
+                # for theme in themes:
+                #     theme_text = theme.find_element_by_tag_name('li').text
+                #     theme_list.append(theme_text)
+                #
+                # print(teacher, belong, url, text, theme_text)
+
     def get_html_file(self, urls):
         number = 0
         previous_magazine_date = "default"
@@ -207,10 +234,11 @@ class RunCrawling(object):
     """
 
     get_html = GetHTML()
-    get_html.make_new_directory()
+    # get_html.make_new_directory()
     # get_html.get_NEM_laboratory_list()
-    get_html.get_BioEngineering_laboratory_list()
+    # get_html.get_BioEngineering_laboratory_list()
     # get_html.get_html_of_all_category()
+    get_html.get_mechanics()
 
 
 if __name__ == '__main__':

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h2>プロフィール</h2>
+
+    <h3>名前</h3>
+    {{ user.last_name }}  {{ user.first_name }}
+    <h3>大学</h3>
+    {{ user.university }}
+    <h3>学部・研究科</h3>
+    {{ user.faculty }}
+    <h3>学科・専攻</h3>
+    {{ user.department }}
+    <h3>研究室</h3>
+    {{ laboratory.research_detail }}
+    <h3>学年</h3>
+    {{ user.status_position }}
+    <h3>行っている研究内容</h3>
+    {{ profile.research_detail }}
+    <h3>興味のある研究</h3>
+    {{ profile.interested_area }}
+    <h3>予定進路</h3>
+    {{ profile.future_works }}
+    <h3>自由記入</h3>
+    {{ profile.free_comment }}
+    <br>
+    <br>
+    <br>
+    <br>
+    <a href="javascript:history.back();">前のページに戻る</a>
+{% endblock %}

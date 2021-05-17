@@ -70,7 +70,7 @@ UTF-8">
 <section>
 
     <!-- メインコンテント -->
-    <h1>研究室登録</h1>
+    <h2>研究室会員登録</h2>
     <div class="container mt-3">
 <form action="" method="POST">
     {{ form.non_field_errors }}
@@ -85,7 +85,13 @@ UTF-8">
     <button type="submit" class="btn btn-primary btn-lg">送信</button>
 </form>
     </div>
-
+<ul>
+    <li><a href="{% url 'accounts:university_create' %}">大学がないときはこちら</a></li>
+    <li><a href="{% url 'accounts:university_area_create' %}">都道府県がないときはこちら****************************</a></li>
+    <li><a href="{% url 'accounts:faculty_create' %}">学部がないときはこちら</a></li>
+    <li><a href="{% url 'accounts:department_create' %}">学科・専攻がないときはこちら</a></li>
+    <li><a href="{% url 'accounts:laboratory_create' %}">研究室がないときはこちら</a></li>
+</ul>
 </section>
 
 </div>

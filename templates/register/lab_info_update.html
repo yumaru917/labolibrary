@@ -8,6 +8,13 @@
 
 <body>
     <h1>UpdateView編集画面</h1>
+                    <ul>
+                    <li>研究室名：{{ laboratory.laboratory_name }}</li>
+                    <li>大学：{{ laboratory.belong_university }}</li>
+                    <li>学部：{{ laboratory.belong_faculty }}</li>
+                    <li>学科・専攻：{{ laboratory.belong_department }}</li>
+
+                </ul>
     <form method="post" novalidate>
         {% csrf_token %}
         {{ form.as_p }}

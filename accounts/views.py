@@ -7,12 +7,15 @@ from django.contrib.auth.views import (
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import BadSignature, SignatureExpired, loads, dumps
 from django.http import Http404, HttpResponseBadRequest
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import generic
 from .forms import (
-    LoginForm, LabUserCreateForm, StudentUserCreateForm
+    LoginForm, LabUserCreateForm, StudentUserCreateForm,
+    NewUniversityForm, NewDepartmentForm, NewLaboratoryForm, NewFacultyForm, NewUniversityAreaForm
 )
+
+from mypage.models import (Laboratory, Faculty, Department, University)
 
 import os
 
@@ -49,7 +52,7 @@ class LabUserCreate(generic.CreateView):
         # 仮登録と本登録の切り替えは、is_active属性を使うと簡単です。
         # 退会処理も、is_activeをFalseにするだけにしておくと捗ります。
         user = form.save(commit=False)
-        user.is_lab = True
+        user.is_lab_member = True
         user.is_active = False
         user.save()
 
@@ -138,3 +141,128 @@ class UserCreateComplete(generic.TemplateView):
                     return super().get(request, **kwargs)
 
         return HttpResponseBadRequest()
+
+
+def user_delete_confirm(request):
+    user = request.user
+    return render(request, 'accounts/user_delete_confirm.html', {'user': user})
+
+
+class UserDeleteView(LoginRequiredMixin, generic.View):
+
+    def get(self, *args, **kwargs):
+        user = User.objects.get(email=self.request.user.email)
+        user.is_active = False
+        user.save()
+        return render(self.request, 'accounts/user_delete.html')
+
+
+def register_university(request):
+    form = NewUniversityForm()
+    # formのインスタンス作成
+
+    if request.method == 'POST':
+        # 画面からPOSTした場合に、実行される
+
+        form = NewUniversityForm(request.POST)
+        # 画面からPOSTした値を取得
+
+        if form.is_valid():
+            lab = form.save(commit=False)
+            lab.uploader_id = request.user.id
+            lab.save()
+            # form.saveとするとデータが登録される
+
+            return redirect('accounts:lab_user_create')
+        else:
+            print('ERROR FORM INVALID')
+    return render(request, 'register/university_create.html', {'form': form})
+
+
+def register_department(request):
+    form = NewDepartmentForm()
+    # formのインスタンス作成
+
+    if request.method == 'POST':
+        # 画面からPOSTした場合に、実行される
+
+        form = NewDepartmentForm(request.POST)
+        # 画面からPOSTした値を取得
+
+        if form.is_valid():
+            lab = form.save(commit=False)
+            lab.uploader_id = request.user.id
+            lab.save()
+            # form.saveとするとデータが登録される
+
+            return redirect('accounts:lab_user_create')
+        else:
+            print('ERROR FORM INVALID')
+    return render(request, 'register/department_create.html', {'form': form})
+
+
+def register_laboratory(request):
+    form = NewLaboratoryForm()
+    # formのインスタンス作成
+
+    if request.method == 'POST':
+        # 画面からPOSTした場合に、実行される
+
+        form = NewLaboratoryForm(request.POST)
+        # 画面からPOSTした値を取得
+
+        if form.is_valid():
+            lab = form.save(commit=False)
+            lab.uploader_id = request.user.id
+            lab.save()
+            # form.saveとするとデータが登録される
+
+            return redirect('accounts:lab_user_create')
+        else:
+            print('ERROR FORM INVALID')
+    return render(request, 'register/laboratory_create.html', {'form': form})
+
+
+def register_faculty(request):
+    form = NewFacultyForm()
+    # formのインスタンス作成
+
+    if request.method == 'POST':
+        # 画面からPOSTした場合に、実行される
+
+        form = NewFacultyForm(request.POST)
+        # 画面からPOSTした値を取得
+
+        if form.is_valid():
+            lab = form.save(commit=False)
+            lab.uploader_id = request.user.id
+            lab.save()
+            # form.saveとするとデータが登録される
+
+            return redirect('accounts:lab_user_create')
+        else:
+            print('ERROR FORM INVALID')
+    return render(request, 'register/laboratory_create.html', {'form': form})
+
+
+# 本番は削除する。（都道府県の登録が終わったら。）
+def register_university_area(request):
+    form = NewUniversityAreaForm()
+    # formのインスタンス作成
+
+    if request.method == 'POST':
+        # 画面からPOSTした場合に、実行される
+
+        form = NewUniversityAreaForm(request.POST)
+        # 画面からPOSTした値を取得
+
+        if form.is_valid():
+            lab = form.save(commit=False)
+            lab.uploader_id = request.user.id
+            lab.save()
+            # form.saveとするとデータが登録される
+
+            return redirect('accounts:lab_user_create')
+        else:
+            print('ERROR FORM INVALID')
+    return render(request, 'register/laboratory_create.html', {'form': form})

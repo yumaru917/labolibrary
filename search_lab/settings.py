@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'data_upload.apps.DataUploadConfig',
     'search.apps.SearchConfig',
     'register_lab.apps.RegisterLabConfig',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'contact_form.apps.ContactFormConfig',
     'mypage.apps.MypageConfig',
     'blog.apps.BlogConfig',
+    'laboratory_page.apps.LaboratoryPageConfig'
 ]
 
 MIDDLEWARE = [

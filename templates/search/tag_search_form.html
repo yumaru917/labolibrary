@@ -1,0 +1,57 @@
+{{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <h2>研究室検索<span>Search</span></h2>
+    <div class="col-20">
+        <form action="" method="POST">
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg">検索</button>
+        </form>
+    </div>
+
+    {% if filtering %}
+
+        <h2 style="padding: 1rem 2rem;border-left: 5px solid #000;  background: #f4f4f4; color: black">条件検索</h2>
+        {% if lab_list %}
+            {% for lab in lab_list %}
+                <div class="list">
+                    <figure><img src="{% static "images/sample1.jpg" %}" alt=""></figure>
+                    <div class="text">
+                        <h4 style="font-size: 150%">{{ lab.laboratory }}</h4>
+                        <table style="border-collapse: collapse;  border-spacing: 0;  width: 100%;">
+                            <tr style="border-bottom: solid 1px #eee;  cursor: pointer;">
+                                <th style="width: 10%;  padding: 5px 0; color: white">大学</th>
+                                <th style="width: 25%;  padding: 5px 0; color: white">{{ lab.laboratory.belong_university }}</th>
+                            </tr>
+                            <tr style="border-bottom: solid 1px #eee;  cursor: pointer;">
+                                <th style="width: 10%;  padding: 5px 0; color: white">専攻・学科</th>
+                                <th style="width: 25%;  padding: 5px 0; color: white">{{ lab.laboratory.belong_department }}</th>
+                            </tr>
+                            <tr style="border-bottom: solid 1px #eee;  cursor: pointer;">
+                                <th style="width: 10%;  padding: 5px 0; color: white">研究室テーマ<br>研究キーワード</th>
+                                <th style="width: 25%;  padding: 5px 0; color: white">{{ lab.laboratory.research_keywords }}</th>
+                            </tr>
+
+                        </table>
+                        <p class="btn1"><a href="{% url 'search:detail' lab_pk=lab.pk %}">研究室詳細</a></p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            条件に合う研究室がありません。
+        {% endif %}
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 50px">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+
+{% endblock %}}

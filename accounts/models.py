@@ -41,9 +41,28 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=False)
     last_name = models.CharField(_('last name'), max_length=150, blank=False)
-    university = models.CharField(_('大学'), max_length=30, blank=False)
-    department = models.CharField(_('専攻・学科'), max_length=30, blank=False)
-    laboratory = models.CharField(_('研究室名'), max_length=30, blank=False)
+    # 所属している大学
+    university = models.ForeignKey(
+        'mypage.University',
+        on_delete=models.PROTECT,
+        related_name='user_belong_to_university')
+    # 所属している学部
+    faculty = models.ForeignKey(
+        'mypage.Faculty',
+        on_delete=models.PROTECT,
+        related_name='user_belong_to_faculty')
+    # 所属している学科・専攻
+    department = models.ForeignKey(
+        'mypage.Department',
+        on_delete=models.PROTECT,
+        related_name='user_belong_to_department')
+    # 所属している研究室
+    laboratory = models.ForeignKey(
+        'mypage.Laboratory',
+        on_delete=models.PROTECT,
+        related_name='user_belong_to_laboratory',
+        blank=True,
+        null=True)
     status_position = models.IntegerField(
         _('身分'),
         choices=(
@@ -62,12 +81,20 @@ class User(AbstractBaseUser, PermissionsMixin):
             (12, 'その他'),
         ),
         blank=False)
-    is_lab = models.BooleanField(
-        _('研究室'),
+    # 研究室関係者かどうか
+    is_lab_member = models.BooleanField(
+        _('研究室関係者'),
         default=False,
         help_text=_(
-            'True: 研究室, False: 学生'
+            'True: 研究室関係者, False: 学生'
         )
+    )
+    # お気に入り研究室
+    favorite_laboratory = models.ManyToManyField(
+        'search.LaboratoryInfo',
+        blank=True,
+        verbose_name='お気に入り研究室',
+        related_name='person_favorite_laboratory_info'
     )
 
     is_staff = models.BooleanField(
@@ -118,3 +145,43 @@ class User(AbstractBaseUser, PermissionsMixin):
         メールアドレスを返す
         """
         return self.email
+
+
+class UniversityEmail(models.Model):
+    university = models.ForeignKey(
+        'mypage.University',
+        on_delete=models.PROTECT,
+        related_name='email_of_university')
+    university_email_domain = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return self.university.university + '『' + self.university_email_domain + '』'
+
+    class Meta:
+        verbose_name = '認証用大学メールアドレス'
+        verbose_name_plural = '認証用大学メールアドレス一覧'
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='ユーザープロフィール',
+        related_name='profile'
+    )
+
+    # 自信が行っている研究内容
+    research_detail = models.TextField(blank=True, null=True)
+    # 興味のある研究
+    interested_area = models.TextField(blank=True, null=True)
+    # 予定進路
+    future_works = models.TextField(blank=True, null=True)
+    # 自由記入
+    free_comment = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.user.last_name + 'プロフィール'
+
+    class Meta:
+        verbose_name = 'プロフィール'
+        verbose_name_plural = 'プロフィール一覧'

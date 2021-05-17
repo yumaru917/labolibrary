@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from search.models import Laboratory
+from search.models import LaboratoryInfo
 import csv
 from io import TextIOWrapper, StringIO
 from django.utils import timezone
@@ -11,7 +11,7 @@ def upload(request):
         csv_file = csv.reader(form_data)
         for line in csv_file:
             print(line)
-            laboratory = Laboratory.objects.create(laboratory_name=line[0])
+            laboratory = LaboratoryInfo.objects.create(laboratory_name=line[0])
             laboratory.laboratory_name = line[0]
             laboratory.university = line[1]
             laboratory.department = line[2]

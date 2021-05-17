@@ -1,180 +1,167 @@
+{{% extends 'base.html' %}
 {% load static %}
-<html lang="ja">
-<head>
-<meta charset="
-UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>ビジネスサイト・企業向け 無料ホームページテンプレート tp_biz54</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="ここにサイト説明を入れます">
-<meta name="keywords" content="キーワード１,キーワード２,キーワード３,キーワード４,キーワード５">
-<link rel="stylesheet" href="{% static "css/style.css"%}">
-<script src="{% static "js/openclose.js"%}"></script>
-<script src="{% static "js/fixmenu_pagetop.js"%}"></script>
-<script src="{% static "js/ddmenu_min.js"%}"></script>
-<!--[if lt IE 10]>
-<style>
-.slide0,.slide2,.slide3 {display:none;}
-</style>
-<![endif]-->
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
-{#<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">#}
+{% block content %}
+    <div id="contents">
 
-</head>
-<body>
-<header>
-<h1 id="logo"><a href="{% url 'index' %}"><img src="{% static "images/logo.png"%}" alt="SAMPLE COMPANY"></a></h1>
-<!--PC用（901px以上端末）メニュー-->
-<nav id="menubar">
-<ul>
-<li><a href="{% url "about" %}">Lab Libraryとは</a></li>
-<li class="ddmenu-title">研究室検索
-	<ul class="ddmenu">
-{#	<li><a href="service.html">サービスメニュー</a></li>#}
-{#	<li><a href="service.html">サービスメニュー</a></li>#}
-    <li><a href="{% url 'search:search' %}">キーワード検索</a></li>
-    <li><a href="{% url 'search:search' %}">カテゴリー検索(準備中)</a></li>
-	</ul>
-</li>
-<li><a href="recruit.html">研究室PR(準備中)</a></li>
-<li><a href="{% url 'contact_form:index' %}">Contact</a></li>
-<li><a href="{% url 'register_lab:register' %}">研究室登録</a></li>
-</ul>
-</nav>
-<!--小さい端末用（900px以下端末）メニュー-->
-<nav id="menubar-s">
-<ul>
-<li><a href="about.html">Company</a></li>
-<li id="menubar_hdr2" class="close">Service
-	<ul id="menubar-s2">
-	<li><a href="service.html">サービスメニュー</a></li>
-	<li><a href="service.html">サービスメニュー</a></li>
-	<li><a href="service.html">サービスメニュー</a></li>
-	</ul>
-</li>
-<li><a href="recruit.html">Recruit</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
-</nav>
-<ul class="icon">
-<li><a href="#"><img src="{% static "images/icon_facebook.png"%}" alt="Facebook"></a></li>
-<li><a href="#"><img src="{% static "images/icon_twitter.png"%}" alt="Twitter"></a></li>
-<li><a href="#"><img src="{% static "images/icon_instagram.png"%}" alt="Instagram"></a></li>
-<li><a href="#"><img src="{% static "images/icon_youtube.png"%}" alt="TouTube"></a></li>
-</ul>
-</header>
+        {% if follow_complete %}
+            お気に入りに登録しました。
+        {% endif %}
+        {% if remove_follow_complete %}
+            お気に入りから削除しました。
+        {% endif %}
 
-<div id="contents">
+        <h3 style="padding: 1rem 2rem;border-left: 6px double #000; font-size: 200%">{{ laboratory_info }}</h3>
+    <h2>研究室詳細<span>Detail</span></h2>
+        <h3>大学</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory.belong_university }}
+            </div>
+        <h3>学部・研究科</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory.belong_faculty }}
+            </div>
+        <h3>学科・専攻</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory.belong_department }}
+            </div>
+        <h3>研究キーワード</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.research_keywords }}
+            </div>
+        <h3>研究詳細</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.research_info }}
+            </div>
+        <h3>キャンパス</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.campus }}
+            </div>
+        <h3>研究室HP</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.laboratory_website }}
+            </div>
+        <h3>担当教員</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.professor_name }}
+            </div>
+        <h3>生徒数</h3>
+            <div style="margin: 60px 20px;">
+                <table>
+                            <tr>
+                                <td>全体</td>
+                                <td>{{ laboratory_info.all_student_count }}人</td>
+                            </tr>
+                            <tr>
+                                <td>修士</td>
+                                <td>{{ laboratory_info.master_count }}人</td>
+                            </tr>
+                            <tr>
+                                <td>博士</td>
+                                <td>{{ laboratory_info.doctor_count }}人</td>
+                            </tr>
+                    </table>
+            </div>
+        <h3>進学先・就職先</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.after_graduation }}
+            </div>
+        <h3>院生受け入れ状況</h3>
+            <div style="margin: 60px 20px;">
+                <table>
+                            <tr>
+                                <td>修士</td>
+                                <td>{{ laboratory_info.master_acceptance }}</td>
+                            </tr>
+                            <tr>
+                                <td>博士</td>
+                                <td>{{ laboratory_info.doctor_acceptance }}</td>
+                            </tr>
+                            <tr>
+                                <td>社会人</td>
+                                <td>{{ laboratory_info.adult_graduate_student_acceptance }}</td>
+                            </tr>
+                    </table>
+            </div>
+        <h3>研究室の空気</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.environment }}
+            </div>
+        <h3>内部生外部生の割合</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.students_rate }}
+            </div>
+        <h3>就職しやすい空気かどうか</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.Employment_rate }}
+            </div>
+        <h3>ページ作成日</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.page_create_date }}
+            </div>
+        <h3>ページ更新日</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.page_update_date }}
+            </div>
+        <h3>情報源</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.information_source }}
+            </div>
+        <h3>サイト運営による情報の確認</h3>
+            <div style="margin: 60px 20px;">
+                {{ laboratory_info.confirmation }}
+            </div>
+        <h3>投稿論文</h3>
+            <div style="margin: 60px 20px;">
+                {% if paper_list %}
+                    <table>
+                        <tr>
+                            <td>タイトル</td>
+                            <td>詳細</td>
+                            <td></td>
+                        </tr>
+                        {% for paper in paper_list %}
+                            <tr>
+                                <td>{{ paper.paper_title }}</td>
+                                <td>{{ paper.paper_info }}</td>
+                                <td><a href="{% url 'search:paper_download' paper.pk %}">ダウンロード</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
+            <h2>メンバー</h2>
+    <ul>
+            {% for member in laboratory_member %}
+                <li>{{ member.last_name }}  {{ member.status_position }}</li>
+            {% endfor %}
+    </ul>
+        <h2>研究室に問い合わせ</h2>
+        <a href="{% url 'search:send_message_for_lab' laboratory_info.pk %}">研究室に問い合わせる</a>
+            <div style="margin: 60px 20px;">
+                <a href="{{ laboratory_info.information_source }}" target="_blank">研究室HPへ</a>
+            </div>
 
-<h2>研究室詳細<span>Detail</span></h2>
-  <h3 style="padding: 1rem 2rem;border-left: 6px double #000; font-size: 200%" >{{ laboratory.laboratory_name }}</h3>
-  <div style="width: 70%;margin: 0px auto;">
-    <div style="margin: 60px 20px;">
-      {{ laboratory.research_info }}
-    </div>
-    <div style="margin: 60px 20px;">
-    <table>
-    <tr>
-        <td>タイトル</td>
-        <td>詳細</td>
-        <td></td>
-    </tr>
-      {% for paper in paper_list %}
-          <tr>
-              <td>{{ paper.paper_title }}</td>
-              <td>{{ paper.paper_info }}</td>
-              <td><a href="{% url 'search:paper_download' paper.pk %}">ダウンロード</a></td>
-          </tr>
-      {% endfor %}
-    </table>
-    </div>
-      <div style="margin: 60px 20px;">
-      <a href="{{ laboratory.laboratory_website }}" target="_blank">研究室HPへ</a>
-    </div>
-    <div style="text-align: center; margin-top: 50px">
-        <a href="javascript:history.back();">前のページに戻る</a>
-    </div>
-    <div style="text-align: center; margin-top: 50px">
-      <a href="{% url 'index' %}">トップページに戻る</a>
-    </div>
-  </div>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            {% if laboratory_info.id not in user_favorite_laboratories_id %}
+                <form action="{% url 'search:follow' laboratory_info.pk %}" method="post">
+                    <button type="submit" name="button">お気に入り追加</button>
+                    {% csrf_token %}
+                </form>
+            {% endif %}
 
-<script>
-$(".btn").click(function(){
-    $("form").submit();
-    $("#overlay").fadeIn(500);
-});
-</script>
-</div>
+            {% if laboratory_info.id in user_favorite_laboratories_id %}
+                <form action="{% url 'search:remove_follow' laboratory_info.pk %}" method="post">
 
-<footer>
+                    <button type="submit" name="button">お気に入り削除</button>
+                    {% csrf_token %}
+                </form>
+            {% endif %}
 
-<div id="footermenu">
-<ul>
-<li class="title">タイトル</li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-</ul>
-<ul>
-<li class="title">タイトル</li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-</ul>
-<ul>
-<li class="title">タイトル</li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-</ul>
-<ul>
-<li class="title">タイトル</li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-<li><a href="#">メニューサンプルメニューサンプル</a></li>
-</ul>
-</div>
-<!--/#footermenu-->
+            <div style="text-align: center; margin-top: 50px">
+                <a href="javascript:history.back();">前のページに戻る</a>
+            </div>
+            <div style="text-align: center; margin-top: 50px">
+                <a href="{% url 'index' %}">トップページに戻る</a>
+            </div>
+        </div>
 
-<div id="copyright">
-<small>Copyright&copy; <a href="index.html">SAMPLE COMPANY</a> All Rights Reserved.</small>
-<span class="pr"><a href="https://template-party.com/" target="_blank">《Web Design:Template-Party》</a></span>
-</div>
-<!--/#copyright-->
-
-</footer>
-
-<!--ページの上部に戻る「↑」ボタン-->
-<p class="nav-fix-pos-pagetop"><a href="#">↑</a></p>
-
-<!--メニュー開閉ボタン-->
-<div id="menubar_hdr" class="close"></div>
-
-<!--メニューの開閉処理条件設定　900px以下-->
-<script>
-if (OCwindowWidth() <= 900) {
-	open_close("menubar_hdr", "menubar-s");
-}
-</script>
-
-<!--子メニュー-->
-<script>
-if (OCwindowWidth() <= 900) {
-	open_close("menubar_hdr2", "menubar-s2");
-}
-</script>
-
-</body>
+{% endblock %}}
