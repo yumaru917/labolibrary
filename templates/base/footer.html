@@ -5,15 +5,14 @@
 <ul>
 <li class="title">Lab Libraryについて</li>
 <li><a href="{% url "about" %}">Lab Libraryとは</a></li>
+<li><a href="{% url "about_administrator" %}">管理者について</a></li>
 </ul>
 <ul>
 <li class="title">コンテンツ</li>
-<li><a href="{% url 'search:search' %}">研究室キーワード検索</a></li>
-<li><a href="{% url 'search:tag_search' %}">研究室カテゴリー検索</a></li>
-<li><a href="{% url 'blog:index' %}">コラム記事</a></li>
+<li><a href="{% url 'search:tag_search' %}">研究室検索</a></li>
+<li><a href="{% url 'blog:index' %}">院試情報</a></li>
+<li><a href="{% url 'articles:index' %}">院試特集</a></li>
 <li><a href="{% url 'mypage:mypage' %}">マイページ</a></li>
-<li>院試情報(準備中)</li>
-<li>研究室PR(準備中)</li>
 </ul>
 <ul>
 <li class="title">当サイトについて</li>
@@ -21,10 +20,11 @@
 <li><a href="{% url 'privacy_policy' %}">プライバシーポリシー</a></li>
 <li><a href="{% url 'terms_of_service' %}">利用規約</a></li>
 <li><a href="{% url 'contact_form:index' %}">お問い合わせ</a></li>
+<li><a href="{% url 'feedback:index' %}">ベータ版へのフィードバック</a></li>
 </ul>
 <ul>
 <li class="title">研究室の方へ</li>
-<li><a href="{% url 'register_lab:register' %}">研究室登録はこちら</a></li>
+<li><a href="{% url 'index_for_lab' %}">研究室ホーム</a></li>
 <li><a href="{% url 'laboratory_page:lab_page_home' %}">研究室専用ページ</a></li>
 </ul>
 </div>

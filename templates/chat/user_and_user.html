@@ -1,0 +1,20 @@
+{{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<ul>
+    {% for message in text %}
+
+     <li><h3>送信者：{{ message.send_user.first_name }}-----受信者：{{ message.receive_user.first_name }}</h3></li>
+     <li>{{ message.text }}</li>
+
+    {% endfor %}
+</ul>
+
+<form method="POST">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" value="Submit">
+</form>
+
+{% endblock %}

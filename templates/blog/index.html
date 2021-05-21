@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}投稿一覧 | {{ block.super }}{% endblock %}
-{% block description %}マイブログです。毎日更新します。{% endblock %}
+{% block title %}入試情報一覧 | {{ block.super }}{% endblock %}
+{% block description %}入試情報です。情報は予告なく変更することがありますので、必ず専攻HPをご確認ください。{% endblock %}
 
 {% block content %}
 <div class="container">
   <div class="row">
     <main class="col-md-8">
-      <h1 class="mb-4">投稿一覧</h1>
+      <h1 class="mb-4">入試情報一覧</h1>
       {% include "blog/snippets/main_post_list.html" %}
       {% include "blog/snippets/pagination.html" %}
       {# {% include "blog/snippets/pagination_b.html" %} #}

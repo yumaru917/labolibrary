@@ -1,4 +1,4 @@
-{{ user.email }} 様 会員登録手続きを行っていただき、ありがとうございます。
+{{ user.last_name }}{{ user.first_name }} 様 会員登録手続きを行っていただき、ありがとうございます。
 
 下記URLよりサイトにアクセスの上、引き続き会員登録をお願いいたします。
 まだ会員登録手続きは完了しておりませんので、ご注意ください。
@@ -6,4 +6,8 @@
 本登録用URL
 {{ protocol}}://{{ domain }}{% url 'accounts:user_create_complete' token %}
 
-ほにゃらら
+
+※このメッセージは自動で送信されております。
+
+
+Labo-Libraryラボラブ運営

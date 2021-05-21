@@ -1,6 +1,6 @@
 from django import forms
 
-from search.models import LaboratoryInfo, ResearchPaper
+from search.models import LaboratoryInfo, ResearchPaper, Image
 from mypage.models import Laboratory
 
 
@@ -68,4 +68,15 @@ class PaperUploadForm(forms.ModelForm):
         widgets = {
             'laboratory': forms.HiddenInput(),
             'paper_uploader': forms.HiddenInput()
+        }
+
+
+class ImageUploadForm(forms.ModelForm):
+
+    class Meta:
+        model = Image
+
+        fields = ('title', 'picture', 'laboratory_info')
+        widgets = {
+            'laboratory_info': forms.HiddenInput(),
         }

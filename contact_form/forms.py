@@ -18,6 +18,6 @@ class ContactForm(forms.Form):
         message = EmailMessage(subject=name + "からの問い合わせ",
                                body=inquiry,
                                from_email=email,
-                               to=["greeeen.yusuke.917@gmail.com"],
+                               to=["lablib2021@gmail.com"],
                                cc=[email])
         message.send()

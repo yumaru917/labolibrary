@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{ object.title }} | {{ block.super }}{% endblock %}
+{% block description %}{{ object.description }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <main class="col-md-8">
+      <article class="blog-area">
+        <h1>{{ object.title }}</h1>
+        <p>{{ object.published_at|date }}</p>
+        <p>{{ object.category.name }}</p>
+        {% for tag in object.tags.all %}
+        {{ tag.name }}
+        {% endfor %}
+        <hr>
+            {% if image_0 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_0.content_image }}" alt="{{ image_0.title }}">
+            {% endif %}
+        {{ object.content_0|safe|linebreaksbr }}
+            {% if image_1 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_1.content_image }}" alt="{{ image_1.title }}">
+            {% endif %}
+        {% if object.content_1 %}
+        {{ object.content_1|safe|linebreaksbr }}
+        {% endif %}
+            {% if image_2 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_2.content_image }}" alt="{{ image_2.title }}">
+            {% endif %}
+        {% if object.content_2 %}
+        {{ object.content_2|safe|linebreaksbr }}
+        {% endif %}
+            {% if image_3 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_3.content_image }}" alt="{{ image_3.title }}">
+            {% endif %}
+        {% if object.content_3 %}
+        {{ object.content_3|safe|linebreaksbr }}
+        {% endif %}
+      </article>
+    </main>
+    <aside class="col-md-4">
+      {% include "articles/snippets/sidebar.html" %}
+    </aside>
+  </div>
+</div>
+    <a href="javascript:history.back();">前のページに戻る</a>
+{#    {% for image in object.images_of_article_post %}#}
+{#    {{ images }}#}
+{#    {% endfor %}#}
+{% endblock %}

@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 
-from search.models import LaboratoryInfo, ResearchPaper
+from search.models import LaboratoryInfo, ResearchPaper, Image
 from mypage.models import Laboratory, Department, Faculty, University
 
-from register_lab.forms import NewLaboratoryForm, PaperUploadForm
+from register_lab.forms import NewLaboratoryForm, PaperUploadForm, ImageUploadForm
 
 # Create your views here.
 
@@ -132,5 +132,52 @@ def paper_upload(request):
 class PaperDelete(DeleteView):
     template_name = 'register/paper_delete_confirm.html'
     model = ResearchPaper
+
+    success_url = reverse_lazy('mypage:mypage')
+
+
+def image_upload(request):
+    if request.user.is_lab_member is True:
+        # form登録用のビュー
+        try:
+            form = ImageUploadForm(
+                initial={
+                    'laboratory_info': LaboratoryInfo.objects.get(laboratory_id=request.user.laboratory.id),
+                }
+            )
+        except LaboratoryInfo.DoesNotExist:
+            return render(request, 'register/image_upload_error.html', {})
+        # formのインスタンス作成
+
+        if request.method == 'POST':
+            # 画面からPOSTした場合に、実行される
+
+            form = ImageUploadForm(
+                request.POST,
+                request.FILES,
+                initial={
+                    'laboratory_info': LaboratoryInfo.objects.get(laboratory_id=request.user.laboratory.id),
+                }
+            )
+            print(form['laboratory_info'])
+            # 画面からPOSTした値を取得
+
+            if form.is_valid():
+                paper = form.save(commit=False)
+                paper.save()
+                # form.saveとするとデータが登録される
+
+                return render(request, 'register/image_upload_complete.html', {})
+            else:
+                print('ERROR FORM INVALID')
+        return render(request, 'register/image_upload.html', {'form': form})
+        # POSTしない場合の画面にformを渡す
+    else:
+        return render(request, 'register/not_lab_user_error.html', {})
+
+
+class ImageDelete(DeleteView):
+    template_name = 'register/image_delete_confirm.html'
+    model = Image
 
     success_url = reverse_lazy('mypage:mypage')

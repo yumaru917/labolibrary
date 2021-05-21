@@ -96,6 +96,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name='お気に入り研究室',
         related_name='person_favorite_laboratory_info'
     )
+    # お気に入り登録の通知
+    favorite_laboratory_notification = models.BooleanField(
+        _('お気に入り登録の通知'),
+        default=True,
+    )
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -170,6 +175,8 @@ class UserProfile(models.Model):
         related_name='profile'
     )
 
+    # ニックネーム
+    nickname = models.CharField(blank=True, null=True, max_length=50)
     # 自信が行っている研究内容
     research_detail = models.TextField(blank=True, null=True)
     # 興味のある研究

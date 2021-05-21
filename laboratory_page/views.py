@@ -4,7 +4,7 @@ from django.views import generic
 
 from accounts.models import User
 from mypage.models import Laboratory
-from search.models import LaboratoryInfo, ResearchPaper
+from search.models import LaboratoryInfo, ResearchPaper, Image
 
 
 # Create your views here.
@@ -29,10 +29,17 @@ def lab_page(request):
         except:
             paper_list = None
             print('except happened')
+        try:
+            image_list = Image.objects.filter(laboratory_info=laboratory_info.id)
+            print(image_list[0].title)
+        except:
+            image_list = None
+            print('except happened')
         context = {
             'laboratory': laboratory,
             'laboratory_info': laboratory_info,
             'paper_list': paper_list,
+            'image_list': image_list,
             'liked_by': user_who_like_this_laboratory,
             'lab_notifications': lab_notifications,
             'laboratory_members': laboratory_members

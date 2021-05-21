@@ -23,7 +23,11 @@
         {% if lab_list %}
             {% for lab in lab_list %}
                 <div class="list">
+                    {% if lab.image %}
+                        <figure><img src='media/{{lab.image.picture}}' alt=""></figure>
+                    {% else %}
                     <figure><img src="{% static "images/sample1.jpg" %}" alt=""></figure>
+                    {% endif %}
                     <div class="text">
                         <h4 style="font-size: 150%">{{ lab.laboratory }}</h4>
                         <table style="border-collapse: collapse;  border-spacing: 0;  width: 100%;">
@@ -37,7 +41,7 @@
                             </tr>
                             <tr style="border-bottom: solid 1px #eee;  cursor: pointer;">
                                 <th style="width: 10%;  padding: 5px 0; color: white">研究室テーマ<br>研究キーワード</th>
-                                <th style="width: 25%;  padding: 5px 0; color: white">{{ lab.laboratory.research_keywords }}</th>
+                                <th style="width: 25%;  padding: 5px 0; color: white">{{ lab.research_keywords }}</th>
                             </tr>
 
                         </table>
@@ -45,6 +49,23 @@
                     </div>
                 </div>
             {% endfor %}
+
+
+{#            <!-- 前へ の部分 -->#}
+{#    {% if page_obj.has_previous %}#}
+{#        <a href="?page={{ page_obj.previous_page_number }}">前へ</a>#}
+{#    {% endif %}#}
+{##}
+{#    <!-- 1/3 の部分 -->#}
+{#   {{ page_obj.number }}/{{ page_obj.paginator.num_pages }}#}
+{##}
+{#    <!-- 次へ の部分 -->#}
+{#    {% if page_obj.has_next %}#}
+{#        <a href="?page={{ page_obj.next_page_number }}">次へ</a>#}
+{#    {% endif %}#}
+
+
+
         {% else %}
             条件に合う研究室がありません。
         {% endif %}

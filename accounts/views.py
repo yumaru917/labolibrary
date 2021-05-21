@@ -7,6 +7,7 @@ from django.contrib.auth.views import (
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.signing import BadSignature, SignatureExpired, loads, dumps
 from django.http import Http404, HttpResponseBadRequest
+from django.core.mail import EmailMessage
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.views import generic
@@ -52,7 +53,7 @@ class LabUserCreate(generic.CreateView):
         # 仮登録と本登録の切り替えは、is_active属性を使うと簡単です。
         # 退会処理も、is_activeをFalseにするだけにしておくと捗ります。
         user = form.save(commit=False)
-        user.is_lab_member = True
+        # user.is_lab_member = True
         user.is_active = False
         user.save()
 
@@ -71,6 +72,13 @@ class LabUserCreate(generic.CreateView):
 
         user.email_user(subject, message)
         return redirect('accounts:user_create_done')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['department'] = Department.objects.all()
+        context['faculty'] = Faculty.objects.all()
+        context['university'] = University.objects.all()
+        return context
 
 
 class StudentUserCreate(generic.CreateView):
@@ -135,12 +143,72 @@ class UserCreateComplete(generic.TemplateView):
                 return HttpResponseBadRequest()
             else:
                 if not user.is_active:
+
+                    # 管理者へ承認メールの送信
+                    current_site = get_current_site(self.request)
+                    domain = current_site.domain
+                    context = {
+                        'protocol': self.request.scheme,
+                        'domain': domain,
+                        'token': dumps(user.pk),
+                        'user': user,
+                    }
+
+                    subject = render_to_string('mail_template/create/subject_for_administrator.txt', context)
+                    inquiry = render_to_string('mail_template/create/message_for_administrator.txt', context)
+
+                    message = EmailMessage(subject=subject,
+                                           body=inquiry,
+                                           to=["lablib2021@gmail.com"],
+                                           )
+                    message.send()
+
+                    # 問題なければ本登録とする
+                    # user.is_active = True
+                    # user.save()
+                    return super().get(request, **kwargs)
+
+        return HttpResponseBadRequest()
+
+
+class UserCreateApprovalComplete(generic.TemplateView):
+    """メール内URLアクセス後のユーザー本登録"""
+    template_name = 'register/user_create_approval_complete.html'
+    timeout_seconds = getattr(settings, 'ACTIVATION_TIMEOUT_SECONDS', 60*60*24*365)  # デフォルトでは1日以内
+
+    def get(self, request, **kwargs):
+        """tokenが正しければ本登録."""
+        token = kwargs.get('token')
+        try:
+            user_pk = loads(token, max_age=self.timeout_seconds)
+            print(user_pk)
+
+        # 期限切れ
+        except SignatureExpired:
+            return HttpResponseBadRequest()
+
+        # tokenが間違っている
+        except BadSignature:
+            return HttpResponseBadRequest()
+
+        # tokenは問題なし
+        else:
+            try:
+                user = User.objects.get(pk=user_pk)
+            except User.DoesNotExist:
+                return HttpResponseBadRequest()
+            else:
+                if not user.is_active:
                     # 問題なければ本登録とする
                     user.is_active = True
                     user.save()
                     return super().get(request, **kwargs)
 
         return HttpResponseBadRequest()
+
+
+
+
 
 
 def user_delete_confirm(request):

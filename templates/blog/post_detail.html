@@ -15,7 +15,29 @@
         {{ tag.name }}
         {% endfor %}
         <hr>
-        {{ object.content|safe }}
+            {% if image_0 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_0.content_image }}" alt="{{ image_0.title }}">
+            {% endif %}
+        {{ object.content_0|safe|linebreaksbr }}
+            {% if image_1 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_1.content_image }}" alt="{{ image_1.title }}">
+            {% endif %}
+        {% if object.content_1 %}
+        {{ object.content_1|safe|linebreaksbr }}
+        {% endif %}
+            {% if image_2 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_2.content_image }}" alt="{{ image_2.title }}">
+            {% endif %}
+        {% if object.content_2 %}
+        {{ object.content_2|safe|linebreaksbr }}
+        {% endif %}
+            {% if image_3 %}
+            <img class="card-img-top" src="/../../laboratory_page/media/{{ image_3.content_image }}" alt="{{ image_3.title }}">
+            {% endif %}
+        {% if object.content_3 %}
+        {{ object.content_3|safe|linebreaksbr }}
+        {% endif %}
+
       </article>
       <article class="comment-area">
         <a class="btn btn-primary my-3" href="{% url 'blog:comment_form' post.pk %}">コメントを投稿する</a>

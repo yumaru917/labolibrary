@@ -51,7 +51,10 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag, blank=True)
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    content_0 = models.TextField()
+    content_1 = models.TextField(blank=True, null=True)
+    content_2 = models.TextField(blank=True, null=True)
+    content_3 = models.TextField(blank=True, null=True)
     description = models.TextField(blank=True)
     image = models.ImageField(
         upload_to='post_images/', null=True, blank=True)
@@ -73,7 +76,7 @@ class Post(models.Model):
 
 
 class ContentImage(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.PROTECT)
+    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='images_of_post')
     content_image = models.ImageField(upload_to='post_content_images/')
 
 

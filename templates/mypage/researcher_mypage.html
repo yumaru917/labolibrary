@@ -5,10 +5,10 @@
     <ul>
     <li><a href="{% url 'laboratory_page:lab_page_home' %}">研究室ページへ</a></li>
     <li><a href="{% url 'accounts:logout' %}">ログアウト</a></li>
+    <li><a href="{% url 'contact_form:index' %}">管理者へお問い合わせ</a></li>
     {% if not user_profile %}
     <li><a href="{% url 'mypage:create_user_profile' %}">プロフィール作成</a></li>
     {% else %}
-        要修正（エラー原因）
     <li><a href="{% url 'mypage:user_profile_update' user_profile.pk%}">プロフィール編集</a></li>
     {% endif %}
     </ul>
@@ -22,6 +22,19 @@
     {% if user_profile %}
     <a href="{% url 'mypage:user_profile' %}">プロフィール</a>
     {% endif %}
+    <a href="{% url 'mypage:change_favorite_laboratory_notification_confirm' %}">お気に入り通知を変更する</a>
+
+    <h2>チャット</h2>
+    {% if chat_with is not None %}
+        {% for talk_to in chat_with %}
+            {% if talk_to.receive_user.first_name != user.first_name %}
+            {{ talk_to.receive_user.first_name }}
+            <a href="{% url 'chat:chat_between_user_and_user' talk_to.receive_user.pk %}">チャットをする</a>
+            <br>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
     <br>
     <br>
     <br>
@@ -34,5 +47,4 @@
     <br>
     <br>
     <br>
-    <a href="{% url 'accounts:user_delete_confirm' %}">退会する</a>
 {% endblock %}

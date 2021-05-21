@@ -5,32 +5,20 @@
 <nav id="menubar">
 <ul>
 <li><a href="{% url "about" %}">Lab Libraryとは</a></li>
-<li class="ddmenu-title">研究室検索
-	<ul class="ddmenu">
-{#	<li><a href="service.html">サービスメニュー</a></li>#}
-{#	<li><a href="service.html">サービスメニュー</a></li>#}
-    <li><a href="{% url 'search:search' %}">キーワード検索</a></li>
-    <li><a href="{% url 'search:tag_search' %}">カテゴリー検索(準備中)</a></li>
-	</ul>
-</li>
-<li><a>入試情報（準備中）</a></li>
-<li><a href="{% url 'blog:index' %}">コラム</a></li>
+<li><a href="{% url 'search:tag_search' %}">研究室検索</a></li>
+<li><a href="{% url 'blog:index' %}">入試情報一覧</a></li>
+<li><a href="{% url 'articles:index' %}">院試特集</a></li>
 <li><a href="{% url 'mypage:mypage' %}">マイページ</a></li>
 </ul>
 </nav>
 <!--小さい端末用（900px以下端末）メニュー-->
 <nav id="menubar-s">
 <ul>
-<li><a href="about.html">Company</a></li>
-<li id="menubar_hdr2" class="close">Service
-	<ul id="menubar-s2">
-	<li><a href="service.html">サービスメニュー</a></li>
-	<li><a href="service.html">サービスメニュー</a></li>
-	<li><a href="service.html">サービスメニュー</a></li>
-	</ul>
-</li>
-<li><a href="recruit.html">Recruit</a></li>
-<li><a href="contact.html">Contact</a></li>
+<li><a href="{% url "about" %}">Lab Libraryとは</a></li>
+<li><a href="{% url 'search:tag_search' %}">研究室検索</a></li>
+<li><a href="{% url 'blog:index' %}">入試情報一覧</a></li>
+<li><a href="{% url 'articles:index' %}">院試特集</a></li>
+<li><a href="{% url 'mypage:mypage' %}">マイページ</a></li>
 </ul>
 </nav>
 <ul class="icon">

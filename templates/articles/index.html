@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}特集一覧 | {{ block.super }}{% endblock %}
+{% block description %}入試情報です。情報は予告なく変更することがありますので、必ず専攻HPをご確認ください。{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <main class="col-md-8">
+      <h1 class="mb-4">特集一覧</h1>
+      {% include "articles/snippets/main_post_list.html" %}
+      {% include "articles/snippets/pagination.html" %}
+      {# {% include "blog/snippets/pagination_b.html" %} #}
+    </main>
+    <aside class="col-md-4">
+      {% include "articles/snippets/sidebar.html" %}
+    </aside>
+  </div>
+</div>
+{% endblock %}

@@ -2,10 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import UpdateView
+from django.db.models import Q
 
 from mypage.models import Laboratory
 from search.models import LaboratoryInfo, ResearchPaper
 from accounts.models import User, UserProfile
+from chat.models import ChatMessageBetweenUserAndUser
 
 from mypage.forms import UserProfileCreateForm
 
@@ -24,6 +26,18 @@ def mypage(request):
         user_laboratory = request.user.laboratory
         user_id = request.user.id
         favorite_laboratory = User.objects.get(id=user_id).favorite_laboratory.all()
+        talk_to = ChatMessageBetweenUserAndUser.objects.filter(
+            Q(send_user=user) | Q(receive_user=user)
+        ).order_by('-send_date')
+
+        talk_to_query_list = []
+        talk_to_user_list = []
+        for one_of_talk_to in talk_to:
+            if one_of_talk_to.send_user not in talk_to_user_list:
+                talk_to_query_list.append(one_of_talk_to)
+                talk_to_user_list.append(one_of_talk_to.send_user)
+
+        print(talk_to_query_list)
         print(user_laboratory)
 
         context = {
@@ -31,17 +45,37 @@ def mypage(request):
             'user_profile': user_profile,
             'user_laboratory': user_laboratory,
             'favorite_laboratory': favorite_laboratory,
+            'chat_with': talk_to_query_list
         }
 
         return render(request, "mypage/researcher_mypage.html", context)
     else:
+        try:
+            user_laboratory = request.user.laboratory
+        except:
+            user_laboratory = None
         user_id = request.user.id
         favorite_laboratory = User.objects.get(id=user_id).favorite_laboratory.all()
+        talk_to = ChatMessageBetweenUserAndUser.objects.filter(
+            Q(send_user=user) | Q(receive_user=user)
+        ).order_by('-send_date')
+
+        talk_to_query_list = []
+        talk_to_user_list = []
+        for one_of_talk_to in talk_to:
+            if one_of_talk_to.send_user not in talk_to_user_list:
+                talk_to_query_list.append(one_of_talk_to)
+                talk_to_user_list.append(one_of_talk_to.send_user)
+
+        print(talk_to_query_list)
+        print(user_laboratory)
 
         context = {
             'user': user,
             'user_profile': user_profile,
+            'user_laboratory': user_laboratory,
             'favorite_laboratory': favorite_laboratory,
+            'chat_with': talk_to_query_list
         }
         return render(request, "mypage/student_mypage.html", context)
 
@@ -55,6 +89,7 @@ def user_profile(request):
 def create_user_profile(request):
     user = request.user.id
     form = UserProfileCreateForm(
+        data=request.POST,
         initial={
             'user': user
         }
@@ -71,8 +106,8 @@ def create_user_profile(request):
         # 画面からPOSTした値を取得
 
         if form.is_valid():
-            paper = form.save(commit=False)
-            paper.save()
+            profile = form.save(commit=False)
+            profile.save()
             # form.saveとするとデータが登録される
             context = {
                 'form': form,
@@ -114,3 +149,18 @@ class UserProfileUpdate(UpdateView):
         context = super().get_context_data(**kwargs)  # はじめに継承元のメソッドを呼び出す
         context["user"] = user
         return context
+
+
+def change_favorite_laboratory_notification_confirm(request):
+    user = request.user
+    return render(request, 'mypage/change_favorite_laboratory_notification_confirm.html', {'user': user})
+
+
+def change_favorite_laboratory_notification_complete(request):
+    user = request.user
+    if user.favorite_laboratory_notification:
+        user.favorite_laboratory_notification = False
+    else:
+        user.favorite_laboratory_notification = True
+    user.save()
+    return render(request, 'mypage/change_favorite_laboratory_notification_complete.html', {'user': user})

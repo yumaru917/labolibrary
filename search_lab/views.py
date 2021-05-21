@@ -5,8 +5,16 @@ def index(request):
     return render(request, 'index.html', {})
 
 
+def index_for_lab(request):
+    return render(request, 'index_for_lab.html', {})
+
+
 def about(request):
     return render(request, 'about.html', {})
+
+
+def about_administrator(request):
+    return render(request, 'about_administrator.html', {})
 
 
 def about_for_laboratory(request):

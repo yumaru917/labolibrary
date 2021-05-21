@@ -21,14 +21,20 @@ class LoginForm(AuthenticationForm):
             field.widget.attrs['placeholder'] = field.label  # placeholderにフィールドのラベルを入れる
 
 
+# メイン（まずはこれだけ使う）
 class LabUserCreateForm(UserCreationForm):
     """研究室ユーザー登録用フォーム"""
 
+    # department = forms.ModelChoiceField(
+    #     label='学科・専攻',
+    #     queryset=Department.objects,
+    # )
+
     class Meta:
         model = User
-        fields = ('last_name', 'first_name', 'email',
+        fields = ('is_lab_member', 'last_name', 'first_name', 'email',
                   'university', 'faculty', 'department', 'laboratory', 'status_position')
-        widgets = {'is_lab_member': forms.HiddenInput()}
+        # widgets = {'is_lab_member': forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,6 +43,7 @@ class LabUserCreateForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
+        is_lab_member = self.cleaned_data['is_lab_member']
         User.objects.filter(email=email, is_active=False).delete()
         # ドメインの確認
         str_email = str(email)
@@ -44,8 +51,9 @@ class LabUserCreateForm(UserCreationForm):
         email_domain = str_email[pos_a+1:]
         print(email_domain)
         certification_email_domain = UniversityEmail.objects.all().values_list('university_email_domain', flat=True)
-        # if email_domain not in certification_email_domain:
-        #     raise forms.ValidationError('研究室配属者アカウントとして認証されていないメールアドレスのドメインです。')
+        if is_lab_member:
+            if email_domain not in certification_email_domain:
+                raise forms.ValidationError('研究室配属者アカウントとして認証されていないメールアドレスのドメインです。')
         return email
 
     def clean(self):

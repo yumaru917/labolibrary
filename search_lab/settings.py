@@ -46,7 +46,10 @@ INSTALLED_APPS = [
     'contact_form.apps.ContactFormConfig',
     'mypage.apps.MypageConfig',
     'blog.apps.BlogConfig',
-    'laboratory_page.apps.LaboratoryPageConfig'
+    'articles.apps.ArticlesConfig',
+    'laboratory_page.apps.LaboratoryPageConfig',
+    'chat.apps.ChatConfig',
+    'feedback.apps.FeedbackConfig'
 ]
 
 MIDDLEWARE = [
@@ -138,7 +141,20 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'accounts:top'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# テスト用
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# 本番用
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.googlemail.com'
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'lablib2021@gmail.com'
+# EMAIL_HOST_PASSWORD = 'utnem2020'

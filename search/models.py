@@ -112,3 +112,12 @@ class ResearchPaper(models.Model):
     class Meta:
         verbose_name = '論文'
         db_table = 'research_paper'
+
+
+class Image(models.Model):
+    laboratory_info = models.ForeignKey(LaboratoryInfo, on_delete=models.CASCADE, related_name='upload_images')
+    picture = models.ImageField(upload_to='images/')
+    title = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+現在の設定は{{ user.favorite_laboratory_notification }}です。
+設定を変更しますか？
+<br>
+<a href="{% url 'mypage:change_favorite_laboratory_notification_complete' %}">変更する</a><br>
+<a href="{% url 'mypage:mypage' %}">マイページに戻る</a>
+{% endblock %}

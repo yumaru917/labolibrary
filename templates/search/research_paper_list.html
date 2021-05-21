@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <h3 style="padding: 1rem 2rem;border-left: 6px double #000; font-size: 200%">{{ laboratory_info }}</h3>
+    <h3>投稿論文</h3>
+            <div style="margin: 60px 20px;">
+                {% if paper_list %}
+                    <table>
+                        <tr>
+                            <td>タイトル</td>
+                            <td>詳細</td>
+                            <td></td>
+                        </tr>
+                        {% for paper in paper_list %}
+                            <tr>
+                                <td>{{ paper.paper_title }}</td>
+                                <td>{{ paper.paper_info }}</td>
+                                <td><a href="{% url 'search:paper_download' paper.pk %}">ダウンロード</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
+                <div style="text-align: center; margin-top: 50px">
+                <a href="javascript:history.back();">前のページに戻る</a>
+            </div>
+{% endblock %}

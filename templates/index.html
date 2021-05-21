@@ -33,31 +33,20 @@ UTF-8">
 <nav id="menubar">
 <ul>
 <li><a href="{% url "about" %}">Lab Libraryとは</a></li>
-<li class="ddmenu-title">研究室検索
-	<ul class="ddmenu">
-{#	<li><a href="service.html">サービスメニュー</a></li>#}
-{#	<li><a href="service.html">サービスメニュー</a></li>#}
-    <li><a href="{% url 'search:search' %}">キーワード検索</a></li>
-    <li><a href="{% url 'search:tag_search' %}">カテゴリー検索(準備中)</a></li>
-	</ul>
-</li>
-<li><a href="{% url 'blog:index' %}">コラム</a></li>
+<li><a href="{% url 'search:tag_search' %}">研究室検索</a></li>
+<li><a href="{% url 'blog:index' %}">入試情報一覧</a></li>
+<li><a href="{% url 'articles:index' %}">院試特集</a></li>
 <li><a href="{% url 'mypage:mypage' %}">マイページ</a></li>
 </ul>
 </nav>
 <!--小さい端末用（900px以下端末）メニュー-->
 <nav id="menubar-s">
 <ul>
-<li><a href="about.html">Company</a></li>
-<li id="menubar_hdr2" class="close">Service
-	<ul id="menubar-s2">
-	<li><a href="service.html">サービスメニュー</a></li>
-	<li><a href="service.html">サービスメニュー</a></li>
-	<li><a href="service.html">サービスメニュー</a></li>
-	</ul>
-</li>
-<li><a href="recruit.html">Recruit</a></li>
-<li><a href="contact.html">Contact</a></li>
+<li><a href="{% url "about" %}">Lab Libraryとは</a></li>
+<li><a href="{% url 'search:tag_search' %}">研究室検索</a></li>
+<li><a href="{% url 'blog:index' %}">入試情報一覧</a></li>
+<li><a href="{% url 'articles:index' %}">院試特集</a></li>
+<li><a href="{% url 'mypage:mypage' %}">マイページ</a></li>
 </ul>
 </nav>
 <ul class="icon">
@@ -69,6 +58,9 @@ UTF-8">
 </header>
 
 <div id="contents">
+
+    <h2>学生用</h2>
+    <a href="{% url "index_for_lab" %}">研究室の方はこちら</a>
 
 
 <section id="new">
@@ -130,15 +122,14 @@ UTF-8">
 <ul>
 <li class="title">Lab Libraryについて</li>
 <li><a href="{% url "about" %}">Lab Libraryとは</a></li>
+<li><a href="{% url "about_administrator" %}">管理者について</a></li>
 </ul>
 <ul>
 <li class="title">コンテンツ</li>
-<li><a href="{% url 'search:search' %}">研究室キーワード検索</a></li>
-<li><a href="{% url 'search:tag_search' %}">研究室カテゴリー検索</a></li>
-<li><a href="{% url 'blog:index' %}">コラム記事</a></li>
+<li><a href="{% url 'search:tag_search' %}">研究室検索</a></li>
+<li><a href="{% url 'blog:index' %}">院試情報</a></li>
+<li><a href="{% url 'articles:index' %}">院試特集</a></li>
 <li><a href="{% url 'mypage:mypage' %}">マイページ</a></li>
-<li>院試情報(準備中)</li>
-<li>研究室PR(準備中)</li>
 </ul>
 <ul>
 <li class="title">当サイトについて</li>
@@ -146,10 +137,11 @@ UTF-8">
 <li><a href="{% url 'privacy_policy' %}">プライバシーポリシー</a></li>
 <li><a href="{% url 'terms_of_service' %}">利用規約</a></li>
 <li><a href="{% url 'contact_form:index' %}">お問い合わせ</a></li>
+<li><a href="{% url 'feedback:index' %}">ベータ版へのフィードバック</a></li>
 </ul>
 <ul>
 <li class="title">研究室の方へ</li>
-<li><a href="{% url 'register_lab:register' %}">研究室登録はこちら</a></li>
+<li><a href="{% url 'index_for_lab' %}">研究室ホーム</a></li>
 <li><a href="{% url 'laboratory_page:lab_page_home' %}">研究室専用ページ</a></li>
 </ul>
 </div>

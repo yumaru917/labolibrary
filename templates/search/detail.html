@@ -1,4 +1,4 @@
-{{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block content %}
     <div id="contents">
@@ -11,6 +11,19 @@
         {% endif %}
 
         <h3 style="padding: 1rem 2rem;border-left: 6px double #000; font-size: 200%">{{ laboratory_info }}</h3>
+    <h2>記載写真リスト</h2>
+    <table>
+    <tr>
+        <td>タイトル</td>
+        <td></td>
+    </tr>
+      {% for image in image_list %}
+                {#なんでMEDIA_ROOTが読み込まれないん？#}
+{#              <img src='http://127.0.0.1:8000/laboratory_page/media/{{image.picture}}'>#}
+              <img src='/../../laboratory_page/media/{{image.picture}}'>
+      {% endfor %}
+    </table>
+
     <h2>研究室詳細<span>Detail</span></h2>
         <h3>大学</h3>
             <div style="margin: 60px 20px;">
@@ -111,24 +124,7 @@
                 {{ laboratory_info.confirmation }}
             </div>
         <h3>投稿論文</h3>
-            <div style="margin: 60px 20px;">
-                {% if paper_list %}
-                    <table>
-                        <tr>
-                            <td>タイトル</td>
-                            <td>詳細</td>
-                            <td></td>
-                        </tr>
-                        {% for paper in paper_list %}
-                            <tr>
-                                <td>{{ paper.paper_title }}</td>
-                                <td>{{ paper.paper_info }}</td>
-                                <td><a href="{% url 'search:paper_download' paper.pk %}">ダウンロード</a></td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                {% endif %}
-            </div>
+            <a href="{% url 'search:research_paper_list' lab_pk=laboratory_info.pk%}">投稿論文一覧</a>
             <h2>メンバー</h2>
     <ul>
             {% for member in laboratory_member %}
@@ -164,4 +160,4 @@
             </div>
         </div>
 
-{% endblock %}}
+{% endblock %}
