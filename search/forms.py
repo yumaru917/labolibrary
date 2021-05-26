@@ -17,6 +17,7 @@ class TagSearchForm(forms.Form):
     university = forms.ModelChoiceField(University.objects, required=False, label='大学')
     faculty = forms.ModelChoiceField(Faculty.objects, required=False, label='学部・研究科')
     department = forms.ModelChoiceField(Department.objects, required=False, label='学科・専攻')
+    professor_name = forms.CharField(required=False, max_length=100, label='教授名')
     master_acceptance = forms.NullBooleanField(required=False, label='修士受け入れ')
     doctor_acceptance = forms.NullBooleanField(required=False, label='博士受け入れ')
 

@@ -241,7 +241,7 @@ def register_university(request):
             lab.save()
             # form.saveとするとデータが登録される
 
-            return redirect('accounts:lab_user_create')
+            return redirect('accounts:user_create')
         else:
             print('ERROR FORM INVALID')
     return render(request, 'register/university_create.html', {'form': form})
@@ -263,7 +263,7 @@ def register_department(request):
             lab.save()
             # form.saveとするとデータが登録される
 
-            return redirect('accounts:lab_user_create')
+            return redirect('accounts:user_create')
         else:
             print('ERROR FORM INVALID')
     return render(request, 'register/department_create.html', {'form': form})
@@ -285,7 +285,7 @@ def register_laboratory(request):
             lab.save()
             # form.saveとするとデータが登録される
 
-            return redirect('accounts:lab_user_create')
+            return redirect('accounts:user_create')
         else:
             print('ERROR FORM INVALID')
     return render(request, 'register/laboratory_create.html', {'form': form})
@@ -307,7 +307,7 @@ def register_faculty(request):
             lab.save()
             # form.saveとするとデータが登録される
 
-            return redirect('accounts:lab_user_create')
+            return redirect('accounts:user_create')
         else:
             print('ERROR FORM INVALID')
     return render(request, 'register/laboratory_create.html', {'form': form})
@@ -330,7 +330,7 @@ def register_university_area(request):
             lab.save()
             # form.saveとするとデータが登録される
 
-            return redirect('accounts:lab_user_create')
+            return redirect('accounts:user_create')
         else:
             print('ERROR FORM INVALID')
     return render(request, 'register/laboratory_create.html', {'form': form})

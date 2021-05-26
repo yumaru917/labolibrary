@@ -165,7 +165,7 @@ def tag_search_view(request):
                     str_search_text = str(request.POST['search_text'])
                     SearchText.objects.create(search_item=str_search_text)
                     if str_search_text:
-                        laboratory_query_list = LaboratoryInfo.objects.filter(
+                        laboratory_query_list = laboratory_query_list.filter(
                             Q(research_keywords__icontains=str_search_text) | Q(
                                 research_info__icontains=str_search_text))
                 if request.POST['university_area']:
@@ -188,6 +188,12 @@ def tag_search_view(request):
                         laboratory__belong_department=input_department
                     )
                     print(laboratory_query_list)
+                if request.POST['professor_name']:
+                    str_professor_name = str(request.POST['professor_name'])
+                    if str_professor_name:
+                        laboratory_query_list = laboratory_query_list.filter(
+                            Q(professor_name__contains=str_professor_name)
+                        )
                 if request.POST.get('master_acceptance'):
                     if input_master_acceptance:
                         laboratory_query_list = laboratory_query_list.filter(
@@ -195,7 +201,7 @@ def tag_search_view(request):
                         )
                         print(input_master_acceptance)
                         print(laboratory_query_list)
-                if request.POST.get('department'):
+                if request.POST.get('doctor_acceptance'):
                     if input_doctor_acceptance:
                         laboratory_query_list = laboratory_query_list.filter(
                             doctor_acceptance=input_doctor_acceptance
