@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.views.generic import ListView
+
 from search.models import LaboratoryInfo, SearchText, ResearchPaper, Image
 from mypage.models import Laboratory
 from search.forms import SearchForm, TagSearchForm, SendContactForLaboratory
@@ -41,6 +43,158 @@ def paginate_queryset(request, queryset, count):
     except EmptyPage:
         page_obj = paginator.page(paginator.num_pages)
     return page_obj
+
+
+class SearchView(ListView):
+    template_name = "search/search_test.html"
+    model = LaboratoryInfo
+
+    def get_queryset(self, **kwargs):
+        model = LaboratoryInfo.objects.values()
+        form = TagSearchForm(self.request.POST)
+        lab_list = []
+        table = None
+        # context = super().get_context_data(**kwargs)
+        # print(context)
+        context = {'model': model,
+                   'form': form,
+                   'table': table,
+                   'lab_list': lab_list,
+                   'list_json': None}
+
+        print(self.request)
+
+        if self.request.POST:
+
+            print(self.request.POST['search_text'])
+            print(self.request.POST['university_area'])
+            print(self.request.POST['university'])
+            print(self.request.POST['faculty'])
+            print(self.request.POST['department'])
+            logger.info(self.request.POST)
+
+            input_university_area = self.request.POST['university_area']
+            input_university = self.request.POST['university']
+            input_faculty = self.request.POST['faculty']
+            input_department = self.request.POST['department']
+            input_master_acceptance = self.request.POST.get('master_acceptance')
+            input_doctor_acceptance = self.request.POST.get('doctor_acceptance')
+
+            if input_master_acceptance == "true":
+                input_master_acceptance = True
+            elif input_master_acceptance == "false":
+                input_master_acceptance = False
+            else:
+                input_master_acceptance = None
+
+            if input_doctor_acceptance == "true":
+                input_doctor_acceptance = True
+            elif input_doctor_acceptance == "false":
+                input_doctor_acceptance = False
+            else:
+                input_doctor_acceptance = None
+
+            filtering = {
+                'university_area': input_university_area,
+                'university': input_university,
+                'faculty': input_faculty,
+                'department': input_department,
+                'master_acceptance': input_master_acceptance,
+                'doctor_acceptance': input_doctor_acceptance
+            }
+
+            laboratory_query_list = LaboratoryInfo.objects.all()
+
+            if self.request.POST:
+                if self.request.POST['search_text']:
+                    str_search_text = str(self.request.POST['search_text'])
+                    SearchText.objects.create(search_item=str_search_text)
+                    if str_search_text:
+                        laboratory_query_list = laboratory_query_list.filter(
+                            Q(research_keywords__icontains=str_search_text) | Q(
+                                research_info__icontains=str_search_text))
+                if self.request.POST['university_area']:
+                    laboratory_query_list = laboratory_query_list.filter(
+                        laboratory__belong_university__university_area=input_university_area,
+                    )
+                    print(laboratory_query_list)
+                if self.request.POST['university']:
+                    laboratory_query_list = laboratory_query_list.filter(
+                        laboratory__belong_university=input_university,
+                    )
+                    print(laboratory_query_list)
+                if self.request.POST['faculty']:
+                    laboratory_query_list = laboratory_query_list.filter(
+                        laboratory__belong_faculty=input_faculty,
+                    )
+                    print(laboratory_query_list)
+                if self.request.POST['department']:
+                    laboratory_query_list = laboratory_query_list.filter(
+                        laboratory__belong_department=input_department
+                    )
+                    print(laboratory_query_list)
+                if self.request.POST['professor_name']:
+                    str_professor_name = str(self.request.POST['professor_name'])
+                    if str_professor_name:
+                        laboratory_query_list = laboratory_query_list.filter(
+                            Q(professor_name__contains=str_professor_name)
+                        )
+                if self.request.POST.get('master_acceptance'):
+                    if input_master_acceptance:
+                        laboratory_query_list = laboratory_query_list.filter(
+                            master_acceptance=input_master_acceptance
+                        )
+                        print(input_master_acceptance)
+                        print(laboratory_query_list)
+                if self.request.POST.get('doctor_acceptance'):
+                    if input_doctor_acceptance:
+                        laboratory_query_list = laboratory_query_list.filter(
+                            doctor_acceptance=input_doctor_acceptance
+                        )
+                        print(laboratory_query_list)
+            else:
+                laboratory_query_list = LaboratoryInfo.objects.all()
+
+            # laboratory_query_list = paginate_queryset(request, laboratory_query_list, 10)
+
+            for laboratory_query in laboratory_query_list:
+                laboratory = laboratory_query.laboratory
+                laboratory_info = laboratory.info_of_laboratory
+                keywords = laboratory_query.research_keywords
+                university = laboratory_query.laboratory.belong_university
+                create_date = laboratory_query.page_create_date
+                lab_url = laboratory_query.laboratory_website
+                pk = laboratory_query.pk
+                try:
+                    image = Image.objects.filter(laboratory_info=laboratory_info)[0]
+                    print(Image.objects.filter(laboratory_info=laboratory_info)[0])
+                except:
+                    image = None
+                    print('no image except happened')
+                lab_dict = {
+                    'laboratory': laboratory,
+                    'image': image,
+                    'research_keywords': keywords,
+                    'university': university,
+                    'create_date': create_date,
+                    'lab_url': lab_url,
+                    'pk': pk,
+                }
+                lab_list.append(lab_dict)
+
+            context = {'model': model,
+                       'form': form,
+                       'table': table,
+                       'filtering': filtering,
+                       'lab_query_list': laboratory_query_list,
+                       'lab_list': lab_list,
+                       # 'post_list': laboratory_query_list.object_list,
+                       # 'page_obj': laboratory_query_list,
+                       }
+
+            # return HttpResponse(table)
+            return context
+        return context
 
 
 def search_view(request):
