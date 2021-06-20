@@ -25,79 +25,99 @@ worksheet_list = workbook.worksheets()
 
 print(worksheet_list)
 
-# faculty = '工学系研究科'
-# worksheet = workbook.worksheet('工学系研究科')
+faculty = '工学系研究科'
+worksheet = workbook.worksheet('工学系研究科')
 
-faculty = '新領域創成科学研究科'
-worksheet = workbook.worksheet('新領域創生科学研究科')
+# faculty = '新領域創成科学研究科'
+# worksheet = workbook.worksheet('新領域創生科学研究科')
 
 cell_list = worksheet.get_all_values()
 
-with open('laboratory_info.csv', 'w', encoding='utf-8') as f:
-    writer = csv.writer(f)
+# print(cell_list)
+
+with open('laboratory_keywords_replace.csv', 'w', encoding='utf-8') as f:
+
     for row in cell_list:
-        if row[0] != '' and 'http' not in row[0]:
-            department = row[0]
+        # print(row[6])
+        if '、' in row[6]:
+            replace_row = row[6].replace('、', '，')
+            print(replace_row)
+            f.write(replace_row)
+            f.write('\n')
+        elif ',' in row[6]:
+            replace_row = row[6].replace(',', '，')
+            print(replace_row)
+            f.write(replace_row)
+            f.write('\n')
         else:
-            print('except-----------------------------')
-            pass
-        if row[2]:
-            laboratory = row[2]
-            laboratory = laboratory.replace('\u3000', '')
-        else:
-            laboratory = 'unknown'
-        if row[3]:
-            professor = row[3]
-            professor = professor.replace('\u3000', ' ')
-        else:
-            professor = 'unknown'
-        if row[4]:
-            laboratory_info = row[4]
-            laboratory_info = laboratory_info.replace('\r', '')
-            laboratory_info = laboratory_info.replace('\n', '')
-        else:
-            laboratory_info = 'unknown'
-        if row[5]:
-            laboratory_HP = row[5]
-        else:
-            laboratory_HP = ''
-        if row[6]:
-            research_keyword = row[6]
-        else:
-            research_keyword = ''
-        if row[7]:
-            site_from = row[7]
-        elif row[5]:
-            site_from = row[5]
-        else:
-            site_from = 'unknown'
+            f.write(row[6])
+            f.write('\n')
 
-        laboratory_dictionary = {
-            'faculty': faculty,
-            'department': department,
-            'laboratory': laboratory,
-            'professor': professor,
-            'laboratory_info': laboratory_info,
-            'laboratory_HP': laboratory_HP,
-            'research_keyword': research_keyword,
-            'site_from': site_from
-        }
-
-        print(laboratory_dictionary)
-
-        laboratory_csv_row = [
-            faculty,
-            department,
-            laboratory,
-            professor,
-            laboratory_info,
-            laboratory_HP,
-            research_keyword,
-            site_from
-        ]
+# with open('laboratory_info.csv', 'w', encoding='utf-8') as f:
+#     writer = csv.writer(f)
+#     for row in cell_list:
+#         if row[0] != '' and 'http' not in row[0]:
+#             department = row[0]
+#         else:
+#             print('except-----------------------------')
+#             pass
+#         if row[2]:
+#             laboratory = row[2]
+#             laboratory = laboratory.replace('\u3000', '')
+#         else:
+#             laboratory = 'unknown'
+#         if row[3]:
+#             professor = row[3]
+#             professor = professor.replace('\u3000', ' ')
+#         else:
+#             professor = 'unknown'
+#         if row[4]:
+#             laboratory_info = row[4]
+#             laboratory_info = laboratory_info.replace('\r', '')
+#             laboratory_info = laboratory_info.replace('\n', '')
+#         else:
+#             laboratory_info = 'unknown'
+#         if row[5]:
+#             laboratory_HP = row[5]
+#         else:
+#             laboratory_HP = ''
+#         if row[6]:
+#             research_keyword = row[6]
+#         else:
+#             research_keyword = ''
+#         if row[7]:
+#             site_from = row[7]
+#         elif row[5]:
+#             site_from = row[5]
+#         else:
+#             site_from = 'unknown'
+#
+#         laboratory_dictionary = {
+#             'faculty': faculty,
+#             'department': department,
+#             'laboratory': laboratory,
+#             'professor': professor,
+#             'laboratory_info': laboratory_info,
+#             'laboratory_HP': laboratory_HP,
+#             'research_keyword': research_keyword,
+#             'site_from': site_from
+#         }
+#
+#         print(laboratory_dictionary)
+#
+#         laboratory_csv_row = [
+#             faculty,
+#             department,
+#             laboratory,
+#             professor,
+#             laboratory_info,
+#             laboratory_HP,
+#             research_keyword,
+#             site_from
+#         ]
 
         # writer.writerow(row)
-        writer.writerow(laboratory_csv_row)
+        # writer.writerow(laboratory_csv_row)
 
 # print(cell_list)
 

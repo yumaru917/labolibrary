@@ -21,11 +21,15 @@ class GetHTML(object):
             "BioEngineering":
                 "http://www.bioeng.t.u-tokyo.ac.jp/faculty/index.html",
             "mechanics":
-                "http://www2.mech.t.u-tokyo.ac.jp/research/"
+                "http://www2.mech.t.u-tokyo.ac.jp/research/",
+            "CE":
+                "http://www.chemsys.t.u-tokyo.ac.jp/lab/laboratory/?lang=ja",
+            "material":
+                "http://www.material.t.u-tokyo.ac.jp/faculty/"
         }
         self.laboratory_list = {}
         self.options = webdriver.ChromeOptions()
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         # self.options.add_argument('--no-sandbox')
         self.driver = webdriver.Chrome('C:\\Users\\greee\\anaconda3\\envs\\django-env\\chromedriver.exe'
                                        , options=self.options)
@@ -141,29 +145,53 @@ class GetHTML(object):
                 f.write(professor_name + ',' + lab_detail + ',' + detail_url[1] + '\n')
 
     def get_mechanics(self):
-        print('i')
-        self.driver.get(self.url_list['mechanics'])
-        print(self.driver.get(self.url_list['mechanics']))
-        for i in range(6):
-            if i == 0:
-                continue
-            element = self.driver.find_element_by_id("research{}".format(i))
-            elements = element.find_elements_by_tag_name("li")
-            for ele in elements:
-                # print(ele.text)
-                # teacher = ele.find_element_by_class_name('teacher-name').text
-                # belong = ele.find_element_by_class_name('teacher-belong').text
-                url = ele.find_element_by_class_name('teacher-website')
-                url = url.find_element_by_tag_name('a').get_attribute("href")
-                print(url)
-                # text = ele.find_element_by_class_name('research-text').text
-                # theme_list = []
-                # themes = ele.find_elements_by_class_name('teacher-website')
-                # for theme in themes:
-                #     theme_text = theme.find_element_by_tag_name('li').text
-                #     theme_list.append(theme_text)
-                #
-                # print(teacher, belong, url, text, theme_text)
+        with open('utokyo/Engineer/Mechanics.csv', 'w', encoding='utf-8') as f:
+            print('i')
+            self.driver.get(self.url_list['mechanics'])
+            print(self.driver.get(self.url_list['mechanics']))
+            for i in range(6):
+                if i == 0:
+                    continue
+                element = self.driver.find_element_by_id("research{}".format(i))
+                elements = element.find_elements_by_tag_name("li")
+                for ele in elements:
+                    try:
+                        # print(ele.text)
+                        teacher = ele.find_element_by_class_name('teacher-name').text
+                        print(teacher)
+                        url = ele.find_element_by_class_name('teacher-website')
+                        url = url.find_element_by_tag_name('a').get_attribute("href")
+                        # print(url)
+                        text = ele.find_element_by_class_name('research-text').text
+                        # print(text)
+                        themes = ele.find_element_by_class_name('theme-list').find_elements_by_tag_name('li')
+                        # print(themes)
+                        theme_list = ''
+                        for theme in themes:
+                            # theme_text = theme.find_element_by_tag_name('li').text
+                            # print(theme.text)
+                            theme_list += theme.text
+                            theme_list += '，'
+                        print(theme_list)
+
+                        f.write(teacher + ',' + teacher + ',' + text +
+                                ',' + url + ',' + theme_list + ',' + self.url_list['mechanics'] + '\n')
+
+                    except selenium.common.exceptions.NoSuchElementException:
+                        pass
+
+                    # print(teacher, belong, url, text, theme_text)
+
+    # def get_material(self):
+    #     with open('utokyo/Engineer/Material.csv', 'w', encoding='utf-8') as f:
+    #         print('i')
+            # self.driver.get(self.url_list['material'])
+            # print(self.driver.get(self.url_list['mechanics']))
+            #
+            # sections = self.driver.find_elements_by_class_name('faculty_section')
+            # for section in sections:
+            #     blocks = section.find_elements_by_tag_name('dl')
+            #     print(len(blocks))
 
     def get_html_file(self, urls):
         number = 0
@@ -238,7 +266,8 @@ class RunCrawling(object):
     # get_html.get_NEM_laboratory_list()
     # get_html.get_BioEngineering_laboratory_list()
     # get_html.get_html_of_all_category()
-    get_html.get_mechanics()
+    # get_html.get_mechanics()
+    get_html.get_material()
 
 
 if __name__ == '__main__':
