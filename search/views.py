@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.views.generic import ListView
 
 from search.models import LaboratoryInfo, SearchText, ResearchPaper, Image
-from mypage.models import Laboratory
+from mypage.models import (Laboratory, Faculty, Department, University)
 from search.forms import SearchForm, TagSearchForm, SendContactForLaboratory
 
 logging.basicConfig(level=logging.INFO, format='%(threadName)s: %(message)s')
@@ -60,7 +60,10 @@ class SearchView(ListView):
                    'form': form,
                    'table': table,
                    'lab_list': lab_list,
-                   'list_json': None}
+                   'list_json': None,
+                   'university': University.objects.all(),
+                   'faculty': Faculty.objects.all(),
+                   'department': Department.objects.all()}
 
         print(self.request)
 
@@ -188,6 +191,9 @@ class SearchView(ListView):
                        'filtering': filtering,
                        'lab_query_list': laboratory_query_list,
                        'lab_list': lab_list,
+                       'university': University.objects.all(),
+                       'faculty': Faculty.objects.all(),
+                       'department': Department.objects.all()
                        # 'post_list': laboratory_query_list.object_list,
                        # 'page_obj': laboratory_query_list,
                        }
@@ -207,7 +213,11 @@ def search_view(request):
                'form': form,
                'table': table,
                'lab_list': lab_list,
-               'list_json': None}
+               'list_json': None,
+               'university': University.objects.all(),
+               'faculty': Faculty.objects.all(),
+               'department': Department.objects.all()
+               }
 
     if request.method == 'POST':
         # 入力されたらモデルに格納してloadingに遷移
@@ -334,6 +344,9 @@ def search_view(request):
                        'filtering': filtering,
                        'lab_query_list': laboratory_query_list,
                        'lab_list': lab_list,
+                       'university': University.objects.all(),
+                       'faculty': Faculty.objects.all(),
+                       'department': Department.objects.all()
                        # 'post_list': laboratory_query_list.object_list,
                        # 'page_obj': laboratory_query_list,
                        }
